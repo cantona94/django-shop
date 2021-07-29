@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<meta charset="UTF-8">
+
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+	<script src="//yandex.st/jquery/cookie/1.0/jquery.cookie.min.js"></script>
+	<title>{% block title %} Django Shop {% endblock %}</title>
+</head>
+
+<body>
+
+
+<div class="header">
+    <div class="container">
+        <div class="name_shop">
+            <a href="{% url 'product' %}">
+                <h1>Django Shop</h1>
+            </a>
+		</div>
+
+        <div class="header_button">
+            <button id="callback-button" class="header_button">{{city}}</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-1">
+    <div class="modal__content">
+        <h4>Выберите город:</h4>
+        <form action="" method="post">
+            {% csrf_token %}>
+            <select name="city" required="required">
+                <option value="Moscow">Москва</option>
+                <option value="Saint-Petersburg">Санкт-Петербург</option>
+                <option value="Perm">Пермь</option>
+            </select>
+            <input type="submit" value="ОК">
+        </form>
+    </div>
+</div>
+
+
+{% block product %}
+
+
+<div class="container">
+  <h1>laptops</h1>
+</div>
+
+<div class="container">
+  <div class="input-group">
+
+    <select onchange="product_cag(this.value);">
+      <option value="">Все</option>
+      <option value="ASUS">ASUS</option>
+      <option value="HP">HP</option>
+      <option value="Apple">Apple</option>
+      <option value="Lenovo">Lenovo</option>
+      <option value="MSI">MSI</option>
+    </select>
+
+    <select onchange="sort_product(this.value);">
+      <option value="" selected disabled>Sort</option>
+      <option value="rating">Rating</option>
+      <option value="price">Price</option>
+      <option value="name">Name</option>
+    </select>
+
+    <input type="text" id="laptop" size="50" placeholder="Name...">
+    <button class="btn btn-outline-dark" onClick="find_name();" type="button">Search</button>
+
+  </div>
+</div>
+
+<div class="container">
+    <div class="content__items" id="myProducts">
+        {% for product in all_products %}
+        <div class="product-block">
+             <img class="product-block__image"
+                  src="{{product.image.url}}"
+                  alt="Product"
+             />
+             <h4 class="product-block__title">{{product.name}}</h4>
+             <div class="product-block__bottom">
+                 <div class="product-block__price">{{product.price}} ₽</div>
+                 <Button class="bth" value="{{product.id}}" id="countProductToCart-{{ product.id }}" type="button">
+                     Добавить
+                     <span id="countProductToCart-{{ product.id }}Qty"> {{product.availabilityToCart}}</span>
+                 </Button>
+             </div>
+         </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock%}
+</body>
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"/>
+<script type="text/javascript" src="{% static 'js/sort.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/modalCity.js' %}"></script>
+
+
+</html>

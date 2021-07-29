@@ -1,0 +1,128 @@
+.header {
+    padding: 40px 0;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container h1{
+    color: #181818;
+    font-size: 24px;
+    letter-spacing: 1%;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-top: 10px;
+}
+
+.header_button {
+    border-radius: 8px;
+    color: black;
+    background-color: white;
+    border: 0;
+    transition: background-color 0.1s ease-in-out;
+}
+
+.header_button:hover {
+    background-color: #f9f9f9;
+    text-decoration: underline;
+
+}
+
+.header_button:focus {
+    outline: none !important;
+}
+
+.name_shop  a{
+     text-decoration: none;
+}
+
+.modal {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: .3s;
+    transition: .3s;
+    top: -1000px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.9);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    overflow-y: scroll;
+    padding: 60px 15px;
+}
+
+.modal_active {
+    position: fixed;
+    top: 0;
+    visibility: visible;
+    opacity: 1;
+    -webkit-transition: .3s;
+    transition: .3s;
+}
+
+.modal__content {
+    width: 100%;
+    max-width: 500px;
+    padding: 50px;
+    background: #f9f9f9;
+    -webkit-box-shadow: 0 5px 15px black;
+    box-shadow: 0 5px 15px black;
+    border-radius: 3px;
+    position: relative;
+}
+
+.content__items {
+  padding: 40px 0;
+  margin-top: 20px;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+}
+
+.product-block {
+  width: 277px;
+  text-align: center;
+  margin-bottom: 65px;
+}
+
+.product-block__image {
+    width: 150px;
+    height: 150px;
+}
+
+.product-block__title {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 1%;
+    margin-bottom: 20px;
+}
+
+.product-block__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+ .product-block__price {
+    padding-left: 30px;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 27px;
+    letter-spacing: 0.015em;
+}
