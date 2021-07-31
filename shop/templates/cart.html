@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title%} Django Cart {%endblock%}
+
+{% block product %}
+
+{% if cart.get_len %}
+<div id="pageCart">
+    <div class="container-sm">
+      <h1>Корзина</h1>
+        <button id="clear_cart">Очистить корзину</button>
+    </div>
+
+
+    <div class="container-sm">
+
+     <table class="table" id="myCart" >
+            <tbody>
+            {% for item in cart %}
+                {% with product=item.product %}
+                    <tr id="{{product.id}}">
+                        <td><img class="cart_image" src="{{product.image.url}}" alt=""></td>
+                        <td class="cart_name">{{ product.name }}</td>
+                        <td><button class="button_minus" value="{{product.id}}" id="minus-{{product.id}}">-</button></td>
+                        <td class="cart_quantity" id="quantity_to_cart{{product.id}}">{{ product.availabilityToCart }}</td>
+                        <td><button class="button_plus" value="{{product.id}}" id="plus-{{product.id}}">+</button></td>
+                        <td class="total_price"><span id="total_price_product-{{product.id}}">{{ item.total_price }}</span> ₽</td>
+                        <td>
+                            <button class="remove" value="{{product.id}}" id="remove-{{product.id}}">
+                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z" fill="#EB5A1E" />
+                                    <path d="M5.75998 5.92001L3.83998 5.92001L0.959977 5.92001C0.429817 5.92001 -2.29533e-05 5.49017 -2.29301e-05 4.96001C-2.2907e-05 4.42985 0.429817 4.00001 0.959977 4.00001L3.83998 4L5.75998 4.00001L8.63998 4.00001C9.17014 4.00001 9.59998 4.42985 9.59998 4.96001C9.59998 5.49017 9.17014 5.92001 8.63998 5.92001L5.75998 5.92001Z" fill="#EB5A1E" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                {% endwith %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container-sm">
+        <h5>Всего: <span id="countTotalToCart">{{cart.get_len}} </span> шт.</h5>
+        <h5 class="num"> Сумма заказа: <span id="total_price">{{ cart.get_total_price }} </span> ₽</h5>
+    </div>
+
+    <div class="container-sm">
+        <a href="{% url 'product' %}">
+            <button class="come_back">Вернуться назад</button>
+        </a>
+        <button class="button_order" value="{{cart.get_cart}}">Заказать</button>
+
+    </div>
+</div>
+
+{% else %}
+<div class="container-sm">
+    <div class="cart_empty">
+        <h1>Корзина пустая</h1>
+    </div>
+</div>
+<div class="container-sm">
+    <div class="cart_empty">
+        <a href="{% url 'product' %}">
+            <button class="come_back">Вернуться назад</button>
+        </a>
+    </div>
+</div>
+
+
+{% endif %}
+
+<style>
+    .container-sm {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 700px;
+    }
+    .container-sm h1{
+        color: #181818;
+        font-size: 24px;
+        letter-spacing: 1%;
+        text-transform: uppercase;
+        font-weight: 800;
+        margin-top: 10px;
+    }
+    .cart_image {
+        height: 80px;
+        width: 80px;
+
+</style>
+
+
+{% endblock %}

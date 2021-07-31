@@ -1,7 +1,9 @@
 
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
+from .cart import Cart
 from .models import Product
 
 
@@ -57,3 +59,29 @@ def get_product(request):
         return Response(serialized.data)
     else:
         return Response({})
+
+def cart(request):
+    all_products = Product.objects.all()
+    city = cookie_city(request)
+
+    response = render(request, 'cart.html', {
+        'city': city, 'all_products': all_products
+    })
+
+    response.set_cookie('city', city)
+    return response
+
+@csrf_exempt
+def add_to_cart(request):
+    idProduct = request.POST
+    idAddedProduct = idProduct.get('id_product')
+    product = get_object_or_404(Product, id=idAddedProduct)
+
+    cart = Cart(request)
+    cart.add(product)
+
+    return_dict = dict()
+    return_dict["productToCart"] = product.availabilityToCart
+    return_dict["allCountToCart"] = cart.get_len()
+
+    return JsonResponse(return_dict)
