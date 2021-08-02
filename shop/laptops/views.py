@@ -85,3 +85,40 @@ def add_to_cart(request):
     return_dict["allCountToCart"] = cart.get_len()
 
     return JsonResponse(return_dict)
+
+def dict_json(cart_product, product):
+    return_dict = dict()
+    return_dict["allCountToCart"] = cart_product.get_len()
+    return_dict["total_price"] = cart_product.get_total_price()
+    return_dict["all_quantity_to_cart"] = cart_product.get_total_quantity(product)
+    return_dict["total_price_to_cart_product"] = cart_product.get_total_price_product(product)
+    return return_dict
+
+@api_view(['PATCH'])
+def quantity_plus(request):
+    idProduct = request.data
+    idProductPlus = idProduct.get('id_product')
+    product = get_object_or_404(Product, id=idProductPlus)
+
+    cart = Cart(request)
+    cart.plus_quantity(product)
+
+    return_dict = dict_json(cart, product)
+
+    return JsonResponse(return_dict)
+
+
+@api_view(['PATCH'])
+def quantity_minus(request):
+    idProduct = request.data
+    idProductMinus = idProduct.get('id_product')
+    product = get_object_or_404(Product, id=idProductMinus)
+
+    cart = Cart(request)
+
+    if cart.get_total_quantity(product) > 1:
+        cart.minus_quantity(product)
+
+    return_dict = dict_json(cart, product)
+
+    return JsonResponse(return_dict)
