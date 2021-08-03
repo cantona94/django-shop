@@ -1,11 +1,9 @@
-
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
 from .cart import Cart
 from .models import Product
-
 
 from .serializers import ProductSerializer
 from rest_framework.decorators import api_view
@@ -22,9 +20,16 @@ def cookie_city(request):
 
     return city
 
+
 @csrf_exempt
 def product(request):
     all_products = Product.objects.all()
+    cart = Cart(request)
+
+    if not cart.get_len():
+        for product in all_products:
+            product.availabilityToCart = 0
+            product.save()
 
     city = cookie_city(request)
 
@@ -60,6 +65,7 @@ def get_product(request):
     else:
         return Response({})
 
+
 def cart(request):
     all_products = Product.objects.all()
     city = cookie_city(request)
@@ -70,6 +76,7 @@ def cart(request):
 
     response.set_cookie('city', city)
     return response
+
 
 @csrf_exempt
 def add_to_cart(request):
@@ -82,9 +89,11 @@ def add_to_cart(request):
 
     return_dict = dict()
     return_dict["productToCart"] = product.availabilityToCart
+    return_dict["total_price"] = cart.get_total_price()
     return_dict["allCountToCart"] = cart.get_len()
 
     return JsonResponse(return_dict)
+
 
 def dict_json(cart_product, product):
     return_dict = dict()
@@ -93,6 +102,7 @@ def dict_json(cart_product, product):
     return_dict["all_quantity_to_cart"] = cart_product.get_total_quantity(product)
     return_dict["total_price_to_cart_product"] = cart_product.get_total_price_product(product)
     return return_dict
+
 
 @api_view(['PATCH'])
 def quantity_plus(request):
@@ -120,5 +130,33 @@ def quantity_minus(request):
         cart.minus_quantity(product)
 
     return_dict = dict_json(cart, product)
+
+    return JsonResponse(return_dict)
+
+
+@api_view(['DELETE'])
+def clear_cart(request):
+    cart = Cart(request)
+    cart.clear()
+
+    return_dict = dict()
+    return_dict["allCountToCart"] = 0
+    return_dict["total_price"] = 0
+
+    return JsonResponse(return_dict)
+
+
+@api_view(['DELETE'])
+def remove_cart_item(request):
+    idProduct = request.data
+    idProductMinus = idProduct.get('id_product')
+    product = get_object_or_404(Product, id=idProductMinus)
+
+    cart = Cart(request)
+    cart.remove(product)
+
+    return_dict = dict()
+    return_dict["allCountToCart"] = cart.get_len()
+    return_dict["total_price"] = cart.get_total_price()
 
     return JsonResponse(return_dict)

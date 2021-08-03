@@ -37,7 +37,9 @@
         </div>
 
         <div class="cart">
-            <a href="{% url 'cart' %}"><button class="button__cart"> Корзина
+            <a href="{% url 'cart' %}"><button class="button__cart">
+                <span id="totalPriceToCart">{{ cart.get_total_price }}</span>
+                <div class="delimiter"></div>
                             <svg
                                 width="18"
                                 height="18"
@@ -150,5 +152,6 @@
 <script type="text/javascript" src="{% static 'js/addToCart.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/quantityPlus.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/quantityMinus.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/clearCart.js' %}"></script>
 
 </html>

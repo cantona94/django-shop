@@ -1,6 +1,5 @@
 $(document).on('click', '.bth', function () {
     var id_button = this.id + 'Qty';
-    console.log(id_button)
     data = {
         id_product: $(this).val(),
     }
@@ -10,6 +9,7 @@ $(document).on('click', '.bth', function () {
         data: data,
         success: function (data) {
             $('#allCountToCart').text(data.allCountToCart)
+            $('#totalPriceToCart').text(data.total_price)
             $('#' + id_button).text(data.productToCart)
         },
         error: function () {

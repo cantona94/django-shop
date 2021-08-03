@@ -11,9 +11,13 @@ $(document).on('click', '.button_plus', function () {
         success: function (data) {
             $('#allCountToCart').text(data.allCountToCart);
             $('#countTotalToCart').text(data.allCountToCart);
+            $('#totalPriceToCart').text(data.total_price)
             $('#total_price').text(data.total_price);
             $('#' + id_button).text(data.all_quantity_to_cart);
             $('#' + total_price_product).text(data.total_price_to_cart_product);
+        },
+        error: function () {
+            console.log('error');
         }
     });
 });
