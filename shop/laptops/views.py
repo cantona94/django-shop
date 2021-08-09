@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
 from .cart import Cart
-from .models import Product
+from .models import Product, Order
 
 from .serializers import ProductSerializer
 from rest_framework.decorators import api_view
@@ -78,7 +78,7 @@ def cart(request):
     return response
 
 
-@csrf_exempt
+@api_view(['POST'])
 def add_to_cart(request):
     idProduct = request.POST
     idAddedProduct = idProduct.get('id_product')
@@ -160,3 +160,16 @@ def remove_cart_item(request):
     return_dict["total_price"] = cart.get_total_price()
 
     return JsonResponse(return_dict)
+
+
+@api_view(['POST'])
+def add_order(request):
+    cart = Cart(request)
+    cart_items = cart.get_cart()
+
+    Order.objects.create(orderedProducts=', '.join([item['name'] for item in cart_items.values()]),
+                         quantityProducts=cart.get_len(),
+                         amountOfOrders=cart.get_total_price(),
+                         shoppingCity=request.COOKIES['city'])
+
+    return JsonResponse({})
