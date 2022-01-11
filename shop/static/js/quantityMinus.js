@@ -7,7 +7,7 @@ $(document).on('click', '.button_minus', function () {
             id_product: $(this).val(),
         };
         $.ajax({
-            method: 'PATCH',
+            method: 'PUT',
             url: 'quantity_minus/',
             data: data,
             success: function (data) {

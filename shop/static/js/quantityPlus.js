@@ -5,7 +5,7 @@ $(document).on('click', '.button_plus', function () {
         id_product: $(this).val(),
     };
     $.ajax({
-        method: 'PATCH',
+        method: 'PUT',
         url: 'quantity_plus/',
         data: data,
         success: function (data) {

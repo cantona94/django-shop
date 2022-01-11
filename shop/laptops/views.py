@@ -104,7 +104,7 @@ def dict_json(cart_product, product):
     return return_dict
 
 
-@api_view(['PATCH'])
+@api_view(['PUT'])
 def quantity_plus(request):
     idProduct = request.data
     idProductPlus = idProduct.get('id_product')
@@ -118,7 +118,7 @@ def quantity_plus(request):
     return JsonResponse(return_dict)
 
 
-@api_view(['PATCH'])
+@api_view(['PUT'])
 def quantity_minus(request):
     idProduct = request.data
     idProductMinus = idProduct.get('id_product')
