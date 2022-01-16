@@ -21,7 +21,6 @@ function send_request(param) {
     method: 'GET',
     url: 'api/get_products/?' + param,
     success: function (result) {
-      console.log(result);
       update_table(result);
     },
     error: function () {

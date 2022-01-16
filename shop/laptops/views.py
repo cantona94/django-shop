@@ -67,11 +67,11 @@ def get_product(request):
 
 
 def cart(request):
-    all_products = Product.objects.all()
+
     city = cookie_city(request)
 
     response = render(request, 'cart.html', {
-        'city': city, 'all_products': all_products
+        'city': city,
     })
 
     response.set_cookie('city', city)
